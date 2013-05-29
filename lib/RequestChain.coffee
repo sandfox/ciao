@@ -53,7 +53,9 @@ class RequestChain
       script.push ''
 
       # Spawn child process
-      child = new Process path.resolve( __dirname + '/../node_modules/coffee-script/bin/coffee' ), [ '-s' ], { env: @env }
+      # This line is so hacky and brittle it's unfunny
+      csBinPath = require.resolve('coffee-script').replace 'lib/coffee-script/coffee-script.js', 'bin/coffee'
+      child = new Process csBinPath, [ '-s' ], { env: @env }
 
       child.on 'exit', (code, stdout, stderr) =>
 
